@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 	"text/template"
@@ -18,14 +17,12 @@ func (app *application) home(w http.ResponseWriter , r *http.Request){
 	}
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
-		app.logger.Error(err.Error(),"method" , r.Method , "url" , r.URL.RequestURI())
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		app.serverError(w,r,err)
 		return
 	}
 	err = ts.ExecuteTemplate(w,"base",nil)
 	if err != nil {
-		app.logger.Error(err.Error(), "method" , r.Method , "url" , r.URL.RequestURI())
-		http.Error(w, "Internal Server Error" , http.StatusInternalServerError)
+		app.serverError(w,r,err)
 	}
 }
 
