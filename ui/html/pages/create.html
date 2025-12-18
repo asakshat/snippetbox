@@ -2,12 +2,13 @@
 
 {{define "main"}}
 <form action='/snippet/create' method='POST'>
+    <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
     <div>
         <label>Title</label>
         {{with .Form.FieldErrors.title}}
         <label class="error">{{.}}</label>
         {{end}}
-        <input type="text" name="title">
+        <input type="text" name="title" >
     </div>
     <div>
         <label>Content</label>
@@ -22,8 +23,8 @@
         <label class="error">{{.}}</label>
         {{end}}
         <input type="radio" name="expires" value="365" checked> One Year
-        <input type="radio" name="expires" value="7" checked> One Week
-        <input type="radio" name="expires" value="1" checked> One Day
+        <input type="radio" name="expires" value="7" > One Week
+        <input type="radio" name="expires" value="1" > One Day
     </div>
     <div>
         <input type="submit" value="Publish snippet">
