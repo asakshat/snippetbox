@@ -1,0 +1,40 @@
+package layout
+
+import (
+"fmt"
+"github.com/asakshat/snippetbox/ui/components/partials"
+"github.com/asakshat/snippetbox/ui/types"
+)
+
+templ Base(title string, data types.TemplateData) {
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>{ title } - SnippetBox</title>
+	<link rel="stylesheet" href="/static/css/main.css" />
+	<link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700" />
+	<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+
+<body>
+	<header>
+		<h1><a href="/">SnippetBox</a></h1>
+	</header>
+	@partials.Nav(data)
+	<main>
+		if data.Flash != "" {
+		<div class="flash" id="flash-message">{ data.Flash }</div>
+		}
+		{ children... }
+	</main>
+	<footer>
+		Powered by <a href="https://golang.org/">Go</a> in { fmt.Sprintf("%d", data.CurrentYear) }
+	</footer>
+	<script src="/static/js/main.js"></script>
+</body>
+
+</html>
+}

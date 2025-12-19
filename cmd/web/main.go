@@ -4,7 +4,6 @@ import (
 	"crypto/tls"
 	"database/sql"
 	"flag"
-	"html/template"
 	"log/slog"
 	"net/http"
 	"os"
@@ -18,37 +17,29 @@ import (
 )
 
 type application struct {
-	debug bool
-	logger *slog.Logger
-	snippets models.SnippetModelInterface
-	users models.UserModelInterface
-	templateCache map[string]*template.Template
-	formDecoder *form.Decoder
+	debug          bool
+	logger         *slog.Logger
+	snippets       models.SnippetModelInterface
+	users          models.UserModelInterface
+	formDecoder    *form.Decoder
 	sessionManager *scs.SessionManager
 }
 
 func main() {
 	addr := flag.String("addr", ":4000", "HTTP network address")
-	dsn :=  flag.String("dsn", "web:asdf@/snippetbox?parseTime=true", "MySQL data source name")
-	debug := flag.Bool("debug",false," run in debug mode")
+	dsn := flag.String("dsn", "web:asdf@/snippetbox?parseTime=true", "MySQL data source name")
+	debug := flag.Bool("debug", false, "run in debug mode")
 
 	flag.Parse()
 
-	
-    logger:= slog.New(slog.NewTextHandler(os.Stdout,nil))
+	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
-	db , err := openDB(*dsn)
+	db, err := openDB(*dsn)
 	if err != nil {
 		logger.Error(err.Error())
 		os.Exit(1)
 	}
 	defer db.Close()
-
-	templateCache , err := newTemplateCache()
-	if err != nil {
-		logger.Error(err.Error())
-		os.Exit(1)
-	}
 
 	formDecoder := form.NewDecoder()
 	sessionManager := scs.New()
@@ -56,48 +47,47 @@ func main() {
 	sessionManager.Lifetime = 12 * time.Hour
 	sessionManager.Cookie.Secure = true
 
-	app := &application {
-		debug: 	*debug,
-		logger: logger,
-		snippets: &models.SnippetModel{DB: db,},
-		users:	&models.UserModel{DB: db},
-		templateCache: templateCache,
-		formDecoder: formDecoder,
+	app := &application{
+		debug:          *debug,
+		logger:         logger,
+		snippets:       &models.SnippetModel{DB: db},
+		users:          &models.UserModel{DB: db},
+		formDecoder:    formDecoder,
 		sessionManager: sessionManager,
 	}
 
 	tlsConfig := &tls.Config{
-		CurvePreferences: []tls.CurveID{tls.X25519,tls.CurveP256},
-		MinVersion: tls.VersionTLS12,
+		CurvePreferences: []tls.CurveID{tls.X25519, tls.CurveP256},
+		MinVersion:       tls.VersionTLS12,
 	}
 
 	srv := &http.Server{
-		Addr : *addr,
-		Handler: app.routes(),
-		ErrorLog: slog.NewLogLogger(logger.Handler(),slog.LevelError),
-		TLSConfig: tlsConfig,
-		IdleTimeout: time.Minute,
-		ReadTimeout: 5 * time.Second,
+		Addr:         *addr,
+		Handler:      app.routes(),
+		ErrorLog:     slog.NewLogLogger(logger.Handler(), slog.LevelError),
+		TLSConfig:    tlsConfig,
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
 
-	logger.Info("starting server","addr",*addr)
+	logger.Info("starting server", "addr", *addr)
 
-	err = srv.ListenAndServeTLS("./tls/cert.pem" , "./tls/key.pem")
-    logger.Error(err.Error())
+	err = srv.ListenAndServeTLS("./tls/cert.pem", "./tls/key.pem")
+	logger.Error(err.Error())
 	os.Exit(1)
 }
 
-func openDB(dsn string) (*sql.DB , error){
-	db , err := sql.Open("mysql", dsn)
+func openDB(dsn string) (*sql.DB, error) {
+	db, err := sql.Open("mysql", dsn)
 	if err != nil {
-		return nil , err
+		return nil, err
 	}
 
 	err = db.Ping()
 	if err != nil {
 		db.Close()
-		return nil , err
+		return nil, err
 	}
-	return db , nil
+	return db, nil
 }

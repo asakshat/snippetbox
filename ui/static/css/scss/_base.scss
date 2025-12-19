@@ -1,0 +1,82 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-size: v.$font-size-base;
+    font-family: v.$font-family;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    line-height: v.$line-height-base;
+    background-color: v.$color-background;
+    color: v.$color-text;
+    overflow-y: scroll;
+}
+
+
+h1 {
+    a {
+        font-size: v.$font-size-h1;
+        font-weight: bold;
+        background-image: url("/static/img/logo.png");
+        background-repeat: no-repeat;
+        background-position: 0px 0px;
+        height: v.$font-size-h1;
+        padding-left: 50px;
+        position: relative;
+
+        &:hover {
+            text-decoration: none;
+            color: v.$color-text;
+        }
+    }
+}
+
+h2 {
+    font-size: v.$font-size-h2;
+    margin-bottom: v.$spacing-lg;
+    position: relative;
+    top: -9px;
+}
+
+
+a {
+    color: v.$color-primary;
+    text-decoration: none;
+    transition: v.$transition-base;
+
+    &:hover {
+        color: v.$color-primary-dark;
+        text-decoration: underline;
+    }
+}
+
+
+
+button {
+    background: none;
+    padding: 0;
+    border: none;
+    color: v.$color-primary;
+    text-decoration: none;
+    cursor: pointer;
+    transition: v.$transition-base;
+
+    &:hover {
+        color: v.$color-primary-dark;
+        text-decoration: underline;
+    }
+}
+
+a.button,
+input[type="submit"] {
+    @include m.button;
+}

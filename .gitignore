@@ -1,2 +1,6 @@
 tmp
 tls/
+*_templ.go
+ui/static/css/output.css 
+ui/static/css/main.css      
+ui/static/css/main.css.map  

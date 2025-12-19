@@ -1,0 +1,179 @@
+@use 'sass:color';
+@use 'variables' as v;
+@use 'mixins' as m;
+
+form {
+    div {
+        margin-bottom: v.$spacing-sm;
+
+        &:last-child {
+            border-top: v.$border-width dashed v.$color-border;
+        }
+    }
+
+    input[type="radio"] {
+        margin-left: v.$spacing-sm;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+        @include m.form-input;
+        padding: 0.75em v.$spacing-sm;
+        width: 100%;
+    }
+
+    textarea {
+        @include m.form-input;
+        padding: v.$spacing-sm;
+        width: 100%;
+        height: 266px;
+    }
+
+    label {
+        display: inline-block;
+        margin-bottom: v.$spacing-xs;
+    }
+}
+
+
+.flash {
+    color: v.$color-white;
+    font-weight: bold;
+    background-color: v.$color-text;
+    padding: v.$spacing-sm;
+    margin-bottom: v.$spacing-lg;
+    text-align: center;
+    border-radius: v.$border-radius;
+    animation: slideDown 0.3s ease-out;
+}
+
+.error {
+    color: v.$color-error;
+    font-weight: bold;
+    display: block;
+
+    &:not(.error + input):not(.error + textarea) {
+        color: v.$color-white;
+        background-color: v.$color-error;
+        padding: v.$spacing-sm;
+        margin-bottom: v.$spacing-lg;
+        text-align: center;
+        border-radius: v.$border-radius;
+    }
+
+
+    &+textarea,
+    &+input {
+        border-color: v.$color-error !important;
+        border-width: 2px !important;
+    }
+}
+
+
+.snippet {
+    @include m.card;
+
+    pre {
+        padding: v.$spacing-sm;
+        border-top: v.$border-width solid v.$color-border;
+        border-bottom: v.$border-width solid v.$color-border;
+        background-color: #f8f8f8;
+        overflow-x: auto;
+
+        code {
+            font-family: v.$font-family;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+    }
+
+    .metadata {
+        background-color: v.$color-background-alt;
+        color: v.$color-text-light;
+        padding: 0.75em v.$spacing-sm;
+        overflow: auto;
+
+        span {
+            float: right;
+        }
+
+        strong {
+            color: v.$color-text;
+        }
+
+        time {
+            display: inline-block;
+
+            &:first-child {
+                float: left;
+            }
+
+            &:last-child {
+                float: right;
+            }
+        }
+    }
+}
+
+
+
+table {
+    background: v.$color-white;
+    border: v.$border-width solid v.$color-border;
+    border-collapse: collapse;
+    width: 100%;
+
+    td,
+    th {
+        text-align: left;
+        padding: v.$spacing-xs v.$spacing-sm;
+
+        &:last-child {
+            text-align: right;
+            color: v.$color-text-light;
+        }
+    }
+
+    tr {
+        border-bottom: v.$border-width solid v.$color-border;
+        transition: background-color 0.2s ease;
+
+        &:nth-child(2n) {
+            background-color: v.$color-background-alt;
+        }
+
+        &:hover {
+            background-color: color.scale(v.$color-primary, $lightness: 88%);
+        }
+    }
+
+    thead tr {
+        &:hover {
+            background-color: v.$color-background-alt;
+        }
+    }
+}
+
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}

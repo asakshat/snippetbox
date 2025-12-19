@@ -1,0 +1,46 @@
+package pages
+
+import (
+"github.com/asakshat/snippetbox/ui/components/layout"
+"github.com/asakshat/snippetbox/ui/types"
+"github.com/asakshat/snippetbox/internal/validator"
+)
+
+type UserLoginForm struct {
+Email string `form:"email"`
+Password string `form:"password"`
+Validator validator.Validator `form:"-"`
+}
+
+templ Login(data types.TemplateData, form UserLoginForm) {
+@layout.Base("Login", data) {
+@LoginForm(data.CSRFToken, form)
+}
+}
+
+templ LoginForm(csrfToken string, form UserLoginForm) {
+<form action="/user/login" method="POST" hx-post="/user/login" hx-target="#login-container" hx-swap="outerHTML"
+    id="login-container" novalidate>
+    <input type="hidden" name="csrf_token" value={ csrfToken } />
+    for _, err := range form.Validator.NonFieldErrors {
+    <div class="error">{ err }</div>
+    }
+    <div>
+        <label>Email</label>
+        if errMsg, exists := form.Validator.FieldErrors["email"]; exists {
+        <label class="error">{ errMsg }</label>
+        }
+        <input type="email" name="email" value={ form.Email } />
+    </div>
+    <div>
+        <label>Password</label>
+        if errMsg, exists := form.Validator.FieldErrors["password"]; exists {
+        <label class="error">{ errMsg }</label>
+        }
+        <input type="password" name="password" />
+    </div>
+    <div>
+        <input type="submit" value="Login" />
+    </div>
+</form>
+}
