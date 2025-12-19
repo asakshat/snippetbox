@@ -1,0 +1,40 @@
+package pages
+
+import (
+"github.com/asakshat/snippetbox/internal/models"
+"github.com/asakshat/snippetbox/ui/components/layout"
+"github.com/asakshat/snippetbox/ui/types"
+"time"
+"fmt"
+)
+
+templ Home(data types.TemplateData, snippets []models.Snippet) {
+@layout.Base("Home", data) {
+<h2>Latest Snippets</h2>
+if len(snippets) > 0 {
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Created</th>
+        <th>ID</th>
+    </tr>
+    for _, snippet := range snippets {
+    <tr>
+        <td><a href={ templ.URL(fmt.Sprintf("/snippet/view/%d", snippet.ID)) }>{ snippet.Title }</a></td>
+        <td>{ humanDate(snippet.Created) }</td>
+        <td>#{ fmt.Sprintf("%d", snippet.ID) }</td>
+    </tr>
+    }
+</table>
+} else {
+<p>There is nothing to see here yet</p>
+}
+}
+}
+
+func humanDate(t time.Time) string {
+if t.IsZero() {
+return ""
+}
+return t.UTC().Format("02 Jan 2006 at 15:04")
+}

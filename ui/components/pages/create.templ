@@ -1,0 +1,53 @@
+package pages
+
+import (
+"github.com/asakshat/snippetbox/ui/components/layout"
+"github.com/asakshat/snippetbox/ui/types"
+"github.com/asakshat/snippetbox/internal/validator"
+)
+
+type SnippetCreateForm struct {
+Title string `form:"title"`
+Content string `form:"content"`
+Expires int `form:"expires"`
+Validator validator.Validator `form:"-"`
+}
+
+templ CreateSnippet(data types.TemplateData, form SnippetCreateForm) {
+@layout.Base("Create a New snippet", data) {
+@CreateForm(data.CSRFToken, form)
+}
+}
+
+templ CreateForm(csrfToken string, form SnippetCreateForm) {
+<form action="/snippet/create" method="POST" hx-post="/snippet/create" hx-target="#form-container" hx-swap="outerHTML"
+    id="form-container">
+    <input type="hidden" name="csrf_token" value={ csrfToken } />
+    <div>
+        <label>Title</label>
+        if errMsg, exists := form.Validator.FieldErrors["title"]; exists {
+        <label class="error">{ errMsg }</label>
+        }
+        <input type="text" name="title" value={ form.Title } />
+    </div>
+    <div>
+        <label>Content</label>
+        if errMsg, exists := form.Validator.FieldErrors["content"]; exists {
+        <label class="error">{ errMsg }</label>
+        }
+        <textarea name="content">{ form.Content }</textarea>
+    </div>
+    <div>
+        <label>Delete in:</label>
+        if errMsg, exists := form.Validator.FieldErrors["expires"]; exists {
+        <label class="error">{ errMsg }</label>
+        }
+        <input type="radio" name="expires" value="365" checked?={ form.Expires==365 || form.Expires==0 } /> One Year
+        <input type="radio" name="expires" value="7" checked?={ form.Expires==7 } /> One Week
+        <input type="radio" name="expires" value="1" checked?={ form.Expires==1 } /> One Day
+    </div>
+    <div>
+        <input type="submit" value="Publish snippet" />
+    </div>
+</form>
+}

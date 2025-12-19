@@ -1,0 +1,85 @@
+@use 'variables' as v;
+
+
+@mixin container-padding {
+    padding: 2px calc((100% - v.$max-width) / 2) 0;
+}
+
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+@mixin button($bg-color: v.$color-primary, $hover-color: v.$color-primary-dark) {
+    background-color: $bg-color;
+    color: v.$color-white;
+    border: none;
+    border-radius: v.$border-radius;
+    padding: v.$spacing-sm v.$spacing-md;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: v.$spacing-sm;
+    text-decoration: none;
+    transition: v.$transition-base;
+
+    &:hover {
+        background-color: $hover-color;
+        color: v.$color-white;
+        text-decoration: none;
+    }
+}
+
+
+
+@mixin form-input {
+    color: v.$color-text-light;
+    background: v.$color-white;
+    border: v.$border-width solid v.$color-border;
+    border-radius: v.$border-radius;
+    font-size: v.$font-size-base;
+    font-family: v.$font-family;
+    transition: v.$transition-base;
+
+    &:focus {
+        outline: none;
+        border-color: v.$color-primary;
+    }
+}
+
+
+
+@mixin card {
+    background-color: v.$color-white;
+    border: v.$border-width solid v.$color-border;
+    border-radius: v.$border-radius;
+}
+
+
+@mixin rainbow-gradient {
+    background-image: linear-gradient(to right, v.$gradient-colors...);
+    background-size: 100% 6px;
+    background-repeat: no-repeat;
+}
+
+
+
+@mixin mobile {
+    @media (max-width: 768px) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (max-width: 1024px) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: 1025px) {
+        @content;
+    }
+}

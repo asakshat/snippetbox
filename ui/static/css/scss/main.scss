@@ -1,0 +1,75 @@
+@use 'variables';
+@use 'mixins';
+
+@use 'base';
+@use 'layout';
+@use 'components';
+
+
+
+.text-center {
+    text-align: center;
+}
+
+.mt-1 {
+    margin-top: variables.$spacing-xs;
+}
+
+.mt-2 {
+    margin-top: variables.$spacing-sm;
+}
+
+.mt-3 {
+    margin-top: variables.$spacing-md;
+}
+
+.mt-4 {
+    margin-top: variables.$spacing-lg;
+}
+
+.mb-1 {
+    margin-bottom: variables.$spacing-xs;
+}
+
+.mb-2 {
+    margin-bottom: variables.$spacing-sm;
+}
+
+.mb-3 {
+    margin-bottom: variables.$spacing-md;
+}
+
+.mb-4 {
+    margin-bottom: variables.$spacing-lg;
+}
+
+
+
+@include mixins.mobile {
+
+    header,
+    nav,
+    main,
+    footer {
+        padding: 2px 1rem 0;
+    }
+
+    nav div {
+        width: 100%;
+        float: none;
+        text-align: center !important;
+
+        &:last-child {
+            margin-top: 1rem;
+        }
+    }
+
+    table {
+        font-size: 14px;
+
+        td,
+        th {
+            padding: 6px 10px;
+        }
+    }
+}

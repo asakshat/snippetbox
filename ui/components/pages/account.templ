@@ -1,0 +1,150 @@
+package pages
+
+import (
+"fmt"
+"github.com/asakshat/snippetbox/internal/models"
+"github.com/asakshat/snippetbox/internal/validator"
+"github.com/asakshat/snippetbox/ui/components/layout"
+"github.com/asakshat/snippetbox/ui/types"
+)
+
+
+templ Account(data types.TemplateData, user models.User) {
+@layout.Base("Your Account", data) {
+<h2>Your Account</h2>
+<table>
+    <tr>
+        <th>Name</th>
+        <td>{ user.Name }</td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td>{ user.Email }</td>
+    </tr>
+    <tr>
+        <th>Joined</th>
+        <td>{ humanDate(user.Created) }</td>
+    </tr>
+    <tr>
+        <th>Password</th>
+        <td><a href="/account/password/update">Change Password</a></td>
+    </tr>
+</table>
+}
+}
+
+// password update form
+type AccountPasswordUpdateForm struct {
+CurrentPassword string `form:"current_password"`
+NewPassword string `form:"new_password"`
+ConfirmNewPassword string `form:"confirm_password"`
+Validator validator.Validator `form:"-"`
+}
+
+templ PasswordUpdate(data types.TemplateData, form AccountPasswordUpdateForm) {
+@layout.Base("Change Password", data) {
+@PasswordUpdateForm(data.CSRFToken, form)
+}
+}
+
+templ PasswordUpdateForm(csrfToken string, form AccountPasswordUpdateForm) {
+<form action="/account/password/update" method="POST" hx-post="/account/password/update" hx-target="#password-form"
+    hx-swap="outerHTML" id="password-form" novalidate>
+    <input type="hidden" name="csrf_token" value={ csrfToken } />
+    for _, err := range form.Validator.NonFieldErrors {
+    <div class="error">{ err }</div>
+    }
+    <div>
+        <label>Current Password</label>
+        if errMsg, exists := form.Validator.FieldErrors["current_password"]; exists {
+        <label class="error">{ errMsg }</label>
+        }
+        <input type="password" name="current_password" />
+    </div>
+    <div>
+        <label>New Password</label>
+        if errMsg, exists := form.Validator.FieldErrors["new_password"]; exists {
+        <label class="error">{ errMsg }</label>
+        }
+        <input type="password" name="new_password" />
+    </div>
+    <div>
+        <label>Confirm Password</label>
+        if errMsg, exists := form.Validator.FieldErrors["confirm_password"]; exists {
+        <label class="error">{ errMsg }</label>
+        }
+        <input type="password" name="confirm_password" />
+    </div>
+    <div>
+        <input type="submit" value="Change Password" />
+    </div>
+</form>
+}
+
+// signup form
+type UserSignupForm struct {
+Name string `form:"name"`
+Email string `form:"email"`
+Password string `form:"password"`
+Validator validator.Validator `form:"-"`
+}
+
+templ Signup(data types.TemplateData, form UserSignupForm) {
+@layout.Base("Signup", data) {
+<form action="/user/signup" method="POST" novalidate>
+    <input type="hidden" name="csrf_token" value={ data.CSRFToken } />
+    <div>
+        <label>Name:</label>
+        if errMsg, exists := form.Validator.FieldErrors["name"]; exists {
+        <label class="error">{ errMsg }</label>
+        }
+        <input type="text" name="name" value={ form.Name } />
+    </div>
+    <div>
+        <label>Email</label>
+        if errMsg, exists := form.Validator.FieldErrors["email"]; exists {
+        <label class="error">{ errMsg }</label>
+        }
+        <input type="email" name="email" value={ form.Email } />
+    </div>
+    <div>
+        <label>Password</label>
+        if errMsg, exists := form.Validator.FieldErrors["password"]; exists {
+        <label class="error">{ errMsg }</label>
+        }
+        <input type="password" name="password" />
+    </div>
+    <div>
+        <input type="submit" value="Signup" />
+    </div>
+</form>
+}
+}
+
+
+templ About(data types.TemplateData) {
+@layout.Base("About", data) {
+<h2>About</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+    sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+}
+}
+
+
+templ ViewSnippet(data types.TemplateData, snippet models.Snippet) {
+@layout.Base("View Snippet", data) {
+<div class="snippet">
+    <div class="metadata">
+        <strong>{ snippet.Title }</strong>
+        <span>#{ fmt.Sprintf("%d", snippet.ID) }</span>
+    </div>
+    <pre><code>{ snippet.Content }</code></pre>
+    <div class="metadata">
+        <time>Created: { humanDate(snippet.Created) }</time>
+        <time>Expires: { humanDate(snippet.Expires) }</time>
+    </div>
+</div>
+}
+}

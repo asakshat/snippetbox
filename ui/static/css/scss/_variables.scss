@@ -1,0 +1,63 @@
+$color-primary: #62CB31;
+$color-primary-dark: #4EB722;
+
+// neutral colors
+$color-text: #34495E;
+$color-text-light: #6A6C6F;
+$color-background: #F1F3F6;
+$color-background-alt: #F7F9FA;
+
+// border colors
+$color-border: #E4E5E7;
+
+// status =colors
+$color-error: #C0392B;
+$color-error-dark: #e74c3c;
+$color-white: #FFFFFF;
+
+// colors gradient
+$gradient-colors: (
+    #34495e 0%,
+    #34495e 25%,
+    #9b59b6 25%,
+    #9b59b6 35%,
+    #3498db 35%,
+    #3498db 45%,
+    #62cb31 45%,
+    #62cb31 55%,
+    #ffb606 55%,
+    #ffb606 65%,
+    #e67e22 65%,
+    #e67e22 75%,
+    #e74c3c 75%,
+    #e74c3c 85%,
+    #c0392b 85%,
+    #c0392b 100%
+);
+// typography
+$font-family: "Ubuntu Mono", monospace;
+$font-size-base: 18px;
+$font-size-h1: 36px;
+$font-size-h2: 22px;
+$line-height-base: 1.5;
+
+// spacing
+$spacing-xs: 9px;
+$spacing-sm: 18px;
+$spacing-md: 27px;
+$spacing-lg: 36px;
+$spacing-xl: 54px;
+
+
+// layout
+$max-width: 800px;
+$header-height: 60px;
+$nav-height: 60px;
+
+
+// borders
+$border-radius: 3px;
+$border-width: 1px;
+
+// transitions
+$transition-base: all 0.3s ease;

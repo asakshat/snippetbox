@@ -1,0 +1,98 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+
+header {
+    @include m.rainbow-gradient;
+    @include m.container-padding;
+    border-bottom: v.$border-width solid v.$color-border;
+    overflow: auto;
+    padding-top: 33px;
+    padding-bottom: v.$spacing-md;
+    text-align: center;
+
+    a {
+        color: v.$color-text;
+        text-decoration: none;
+    }
+}
+
+nav {
+    @include m.container-padding;
+    border-bottom: v.$border-width solid v.$color-border;
+    padding-top: 17px;
+    padding-bottom: 15px;
+    background: v.$color-background-alt;
+    align-self: auto;
+    height: v.$nav-height;
+    color: v.$color-text-light;
+
+    a {
+        margin-right: 1.5em;
+        display: inline-block;
+        transition: v.$transition-base;
+
+        &.live {
+            color: v.$color-text;
+            cursor: default;
+
+            &:hover {
+                text-decoration: none;
+            }
+
+            &:after {
+                content: '';
+                display: block;
+                position: relative;
+                left: calc(50% - 7px);
+                top: 9px;
+                width: 14px;
+                height: 14px;
+                background: v.$color-background-alt;
+                border-left: v.$border-width solid v.$color-border;
+                border-bottom: v.$border-width solid v.$color-border;
+                transform: rotate(-45deg);
+            }
+        }
+    }
+
+    form {
+        display: inline-block;
+        margin-left: 1.5em;
+    }
+
+    div {
+        width: 50%;
+        float: left;
+
+        &:last-child {
+            text-align: right;
+
+            a {
+                margin-left: 1.5em;
+                margin-right: 0;
+            }
+        }
+    }
+}
+
+
+main {
+    @include m.container-padding;
+    margin-top: v.$spacing-xl;
+    margin-bottom: v.$spacing-xl;
+    min-height: calc(100vh - 345px);
+
+    overflow: auto;
+}
+
+
+footer {
+    @include m.container-padding;
+    border-top: v.$border-width solid v.$color-border;
+    padding-top: 17px;
+    padding-bottom: 15px;
+    background: v.$color-background-alt;
+    height: v.$header-height;
+    color: v.$color-text-light;
+    text-align: center;
+}
